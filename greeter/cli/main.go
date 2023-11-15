@@ -10,6 +10,9 @@ import (
 	"github.com/uber/jaeger-client-go/config"
 	"go-micro.dev/v4/registry"
 	"log"
+	"os"
+	"os/signal"
+	"syscall"
 
 	//hello "github.com/go-micro/examples/greeter/srv/proto/hello"
 	"go-micro.dev/v4"
@@ -18,6 +21,11 @@ import (
 )
 
 func main() {
+
+	// 创建一个通道，用于接收操作系统信号
+	quit := make(chan os.Signal, 1)
+	// 通知信号传递到 'quit' 通道
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 
 	cfg := &config.Configuration{
 		Sampler: &config.SamplerConfig{
@@ -66,4 +74,13 @@ func main() {
 	}
 
 	fmt.Println(rsp.Msg)
+
+	// 阻塞，直到从 'quit' 通道接收到信号
+	<-quit
+
+	// 收到信号后执行清理操作
+	fmt.Println("Shutting down client...")
+
+	// 退出程序
+	fmt.Println("Client gracefully shut down.")
 }
