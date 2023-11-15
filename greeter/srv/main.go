@@ -10,7 +10,6 @@ import (
 	"go-micro.dev/v4/registry"
 	_ "io"
 	"log"
-	"time"
 	//hello "github.com/go-micro/examples/greeter/srv/proto/hello"
 	"go-micro.dev/v4"
 	pb "github.com/Henry-jk/go-microservice-study/greeter/srv/proto"
